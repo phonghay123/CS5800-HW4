@@ -1,0 +1,265 @@
+import java.util.ArrayList;
+import java.util.List;
+
+abstract class Pizza {
+    private final String size;
+    private final List<String> toppings;
+
+    public Pizza(String size, List<String> toppings) {
+        this.size = size;
+        this.toppings = toppings;
+    }
+
+    public final String getSize() {
+        return size;
+    }
+
+    public abstract String getChain();
+
+    public final String[] getToppings() {
+        return toppings.toArray(new String[0]);
+    }
+
+    abstract void eat();
+}
+
+class PizzaHutPizza extends Pizza {
+
+    public PizzaHutPizza(String size, List<String> toppings) {
+        super(size, toppings);
+    }
+
+    @Override
+    public String getChain() {
+        return "Pizza Hut";
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("You're eating a " + getSize() + " " + getChain() + " pizza with the following toppings:");
+        for (String topping : getToppings()) {
+            System.out.println(topping);
+        }
+        System.out.println();
+    }
+
+}
+
+class LittleCaesars extends Pizza {
+
+    public LittleCaesars(String size, List<String> toppings) {
+        super(size, toppings);
+    }
+
+    @Override
+    public String getChain() {
+        return "Little Caesars";
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("You're eating a " + getSize() + " " + getChain() + " pizza with the following toppings:");
+        for (String topping : getToppings()) {
+            System.out.println(topping);
+        }
+        System.out.println();
+    }
+
+}
+
+class Dominos extends Pizza {
+
+    public Dominos(String size, List<String> toppings) {
+        super(size, toppings);
+    }
+
+    @Override
+    public String getChain() {
+        return "Dominos";
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("You're eating a " + getSize() + " " + getChain() + " pizza with the following toppings:");
+        for (String topping : getToppings()) {
+            System.out.println(topping);
+        }
+        System.out.println();
+    }
+
+}
+
+class PizzaBuilder {
+
+    private final List<String> toppings = new ArrayList<>();
+    private String size;
+
+    public PizzaBuilder size(String size) {
+        this.size = size;
+        return this;
+    }
+
+    public PizzaBuilder withPepperoni() {
+        toppings.add("Pepperoni");
+        return this;
+    }
+
+    public PizzaBuilder withSausage() {
+        toppings.add("Sausage");
+        return this;
+    }
+
+    public PizzaBuilder withMushrooms() {
+        toppings.add("Mushrooms");
+        return this;
+    }
+
+    public PizzaBuilder withBacon() {
+        toppings.add("Bacon");
+        return this;
+    }
+
+    public PizzaBuilder withOnions() {
+        toppings.add("Onions");
+        return this;
+    }
+
+    public PizzaBuilder withExtraCheese() {
+        toppings.add("Extra Cheese");
+        return this;
+    }
+
+    public PizzaBuilder withPeppers() {
+        toppings.add("Peppers");
+        return this;
+    }
+
+    public PizzaBuilder withChicken() {
+        toppings.add("Chicken");
+        return this;
+    }
+
+    public PizzaBuilder withOlives() {
+        toppings.add("Olives");
+        return this;
+    }
+
+    public PizzaBuilder withSpinach() {
+        toppings.add("Spinach");
+        return this;
+    }
+
+    public PizzaBuilder withTomatoAndBasil() {
+        toppings.add("Tomato and Basil");
+        return this;
+    }
+
+    public PizzaBuilder withBeef() {
+        toppings.add("Beef");
+        return this;
+    }
+
+    public PizzaBuilder withHam() {
+        toppings.add("Ham");
+        return this;
+    }
+
+    public PizzaBuilder withPesto() {
+        toppings.add("Pesto");
+        return this;
+    }
+
+    public PizzaBuilder withSpicyPork() {
+        toppings.add("Spicy Pork");
+        return this;
+    }
+
+    public PizzaBuilder withHamAndPineapple() {
+        toppings.add("Ham and Pineapple");
+        return this;
+    }
+
+    public PizzaHutPizza buildPizzaHut() {
+        if (size == null) {
+            throw new IllegalStateException("Size must be set!");
+        }
+        return new PizzaHutPizza(size, new ArrayList<>(toppings));
+    }
+
+    public LittleCaesars buildLittleCaesars() {
+        if (size == null) {
+            throw new IllegalStateException("Size must be set!");
+        }
+        return new LittleCaesars(size, new ArrayList<>(toppings));
+    }
+
+    public Dominos buildDominos() {
+        if (size == null) {
+            throw new IllegalStateException("Size must be set!");
+        }
+        return new Dominos(size, new ArrayList<>(toppings));
+    }
+}
+
+public class PizzaDriver {
+
+    public static void main(String[] args) {
+
+        // Pizza Hut pizzas
+        Pizza pizzaHutSmall = new PizzaBuilder()
+                .size("Small")
+                .withPepperoni()
+                .withBacon()
+                .buildPizzaHut();
+
+        Pizza pizzaHutLarge = new PizzaBuilder()
+                .size("Large")
+                .withChicken()
+                .withExtraCheese()
+                .withBeef()
+                .buildPizzaHut();
+        pizzaHutLarge.eat();
+        pizzaHutSmall.eat();
+
+        //Little Ceasar pizzas
+        Pizza pizzaLittleCaesarsMedium = new PizzaBuilder()
+                .size("Medium")
+                .withPepperoni()
+                .withBacon()
+                .withChicken()
+                .withHam()
+                .withOnions()
+                .withOlives()
+                .withBeef()
+                .withHamAndPineapple()
+                .buildLittleCaesars();
+
+        Pizza pizzaLittleCaesarsSmall = new PizzaBuilder()
+                .size("Small")
+                .withChicken()
+                .withExtraCheese()
+                .withMushrooms()
+                .withPepperoni()
+                .withExtraCheese()
+                .withBeef()
+                .buildLittleCaesars();
+        pizzaLittleCaesarsSmall.eat();
+        pizzaLittleCaesarsMedium.eat();
+
+        //Dominos
+
+        Pizza pizzaDominosSmall = new PizzaBuilder()
+                .size("Small")
+                .withPepperoni()
+                .buildDominos();
+
+        Pizza pizzaDominosLarge = new PizzaBuilder()
+                .size("Large")
+                .withChicken()
+                .withExtraCheese()
+                .withBeef()
+                .buildDominos();
+        pizzaDominosSmall.eat();
+        pizzaDominosLarge.eat();
+    }
+}
