@@ -1,0 +1,52 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Pizza {
+    private String size;
+    private List<String> toppings;
+
+    private Pizza(Builder builder) {
+        this.size = builder.size;
+        this.toppings = builder.toppings;
+    }
+
+    @Override
+    public String toString() {
+        return "Pizza{" +
+                "size='" + size + '\'' +
+                ", toppings=" + toppings +
+                '}';
+    }
+
+    // Builder class
+    public static class Builder {
+        private String size;
+        private List<String> toppings;
+
+        public Builder(String size) {
+            this.size = size;
+            toppings = new ArrayList<>();
+        }
+
+        public Builder addTopping(String topping) {
+            toppings.add(topping);
+            return this;
+        }
+
+        public Pizza build() {
+            return new Pizza(this);
+        }
+    }
+}
+
+public class PizzaHut {
+    public static void main(String[] args) {
+        Pizza pizza = new Pizza.Builder("Large")
+                .addTopping("Pepperoni")
+                .addTopping("Extra Cheese")
+                .addTopping("Spicy Pork")
+                .build();
+
+        System.out.println(pizza);
+    }
+}
