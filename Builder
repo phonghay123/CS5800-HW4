@@ -145,7 +145,7 @@ public class PizzaDriver {
 
     public static void main(String[] args) {
 
-        // Pizza Hut pizzas
+ 
         Pizza pizzaHutSmall3 = new PizzaHutPizza.Builder()
                 .size("Small")
                 .withPepperoni()
@@ -176,11 +176,11 @@ public class PizzaDriver {
                 .withMushrooms()
                 .build();
 
-        // Eat the Pizza Hut pizzas
+       
         pizzaHutSmall3.eat();
         pizzaHutMedium6.eat();
         pizzaHutLarge9.eat();
 
-        // Add similar code for Little Caesars and Dominos later
+   
     }
 }
