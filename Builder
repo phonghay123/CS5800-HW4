@@ -1,52 +1,186 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+interface Pizza {
+    String getSize();
+    String getChain();
+    String[] getToppings();
 
-class Pizza {
-    private String size;
-    private List<String> toppings;
+    void eat();
+}
 
-    private Pizza(Builder builder) {
-        this.size = builder.size;
-        this.toppings = builder.toppings;
+class PizzaHutPizza implements Pizza {
+
+    private final String size;
+    private final String[] toppings;
+
+    private PizzaHutPizza(String size, String[] toppings) {
+        this.size = size;
+        this.toppings = toppings;
     }
 
     @Override
-    public String toString() {
-        return "Pizza{" +
-                "size='" + size + '\'' +
-                ", toppings=" + toppings +
-                '}';
+    public String getSize() {
+        return size;
     }
 
-    // Builder class
-    public static class Builder {
-        private String size;
-        private List<String> toppings;
+    @Override
+    public String getChain() {
+        return "Pizza Hut";
+    }
 
-        public Builder(String size) {
-            this.size = size;
-            toppings = new ArrayList<>();
+    @Override
+    public String[] getToppings() {
+        return toppings;
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("You're eating a " + size + " " + getChain() + " pizza with the following toppings:");
+        for (String topping : toppings) {
+            System.out.println(topping);
         }
+        System.out.println();
+    }
 
-        public Builder addTopping(String topping) {
-            toppings.add(topping);
+    public static class Builder {
+
+        private String size;
+        private final List<String> toppings = new ArrayList<>();
+
+        public Builder size(String size) {
+            this.size = size;
             return this;
         }
 
-        public Pizza build() {
-            return new Pizza(this);
+        public Builder withPepperoni() {
+            toppings.add("Pepperoni");
+            return this;
+        }
+
+        public Builder withSausage() {
+            toppings.add("Sausage");
+            return this;
+        }
+
+        public Builder withMushrooms() {
+            toppings.add("Mushrooms");
+            return this;
+        }
+
+        public Builder withBacon() {
+            toppings.add("Bacon");
+            return this;
+        }
+
+        public Builder withOnions() {
+            toppings.add("Onions");
+            return this;
+        }
+
+        public Builder withExtraCheese() {
+            toppings.add("Extra Cheese");
+            return this;
+        }
+
+        public Builder withPeppers() {
+            toppings.add("Peppers");
+            return this;
+        }
+
+        public Builder withChicken() {
+            toppings.add("Chicken");
+            return this;
+        }
+
+        public Builder withOlives() {
+            toppings.add("Olives");
+            return this;
+        }
+
+        public Builder withSpinach() {
+            toppings.add("Spinach");
+            return this;
+        }
+
+        public Builder withTomatoAndBasil() {
+            toppings.add("Tomato and Basil");
+            return this;
+        }
+
+        public Builder withBeef() {
+            toppings.add("Beef");
+            return this;
+        }
+
+        public Builder withHam() {
+            toppings.add("Ham");
+            return this;
+        }
+
+        public Builder withPesto() {
+            toppings.add("Pesto");
+            return this;
+        }
+
+        public Builder withSpicyPork() {
+            toppings.add("Spicy Pork");
+            return this;
+        }
+
+        public Builder withHamAndPineapple() {
+            toppings.add("Ham and Pineapple");
+            return this;
+        }
+
+        public PizzaHutPizza build() {
+            if (size == null) {
+                throw new IllegalStateException("Size must be set!");
+            }
+            return new PizzaHutPizza(size, toppings.toArray(new String[0]));
         }
     }
 }
 
-public class PizzaHut {
+public class PizzaDriver {
+
     public static void main(String[] args) {
-        Pizza pizza = new Pizza.Builder("Large")
-                .addTopping("Pepperoni")
-                .addTopping("Extra Cheese")
-                .addTopping("Spicy Pork")
+
+        // Pizza Hut pizzas
+        Pizza pizzaHutSmall3 = new PizzaHutPizza.Builder()
+                .size("Small")
+                .withPepperoni()
+                .withBacon()
+                .withBeef()
                 .build();
 
-        System.out.println(pizza);
+        Pizza pizzaHutMedium6 = new PizzaHutPizza.Builder()
+                .size("Medium")
+                .withChicken()
+                .withExtraCheese()
+                .withBeef()
+                .withOlives()
+                .withOnions()
+                .withMushrooms()
+                .build();
+
+        Pizza pizzaHutLarge9 = new PizzaHutPizza.Builder()
+                .size("Large")
+                .withChicken()
+                .withExtraCheese()
+                .withBeef()
+                .withOlives()
+                .withOnions()
+                .withSausage()
+                .withSpicyPork()
+                .withHam()
+                .withMushrooms()
+                .build();
+
+        // Eat the Pizza Hut pizzas
+        pizzaHutSmall3.eat();
+        pizzaHutMedium6.eat();
+        pizzaHutLarge9.eat();
+
+        // Add similar code for Little Caesars and Dominos later
     }
 }
