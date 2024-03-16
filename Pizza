@@ -179,26 +179,23 @@ class PizzaBuilder {
         return this;
     }
 
-    public PizzaHutPizza buildPizzaHut() {
+    public Pizza build(String brand) {
         if (size == null) {
             throw new IllegalStateException("Size must be set!");
         }
-        return new PizzaHutPizza(size, new ArrayList<>(toppings));
+        switch(brand){
+            case "PizzaHut":
+                return new PizzaHutPizza(size, new ArrayList<>(toppings));
+            case "Little Caesars":
+                return new LittleCaesars(size, new ArrayList<>(toppings));
+            case "Dominos":
+                return new Dominos(size, new ArrayList<>(toppings));
+            default:
+                return null;
+        }
+
     }
 
-    public LittleCaesars buildLittleCaesars() {
-        if (size == null) {
-            throw new IllegalStateException("Size must be set!");
-        }
-        return new LittleCaesars(size, new ArrayList<>(toppings));
-    }
-
-    public Dominos buildDominos() {
-        if (size == null) {
-            throw new IllegalStateException("Size must be set!");
-        }
-        return new Dominos(size, new ArrayList<>(toppings));
-    }
 }
 
 public class PizzaDriver {
@@ -210,14 +207,14 @@ public class PizzaDriver {
                 .size("Small")
                 .withPepperoni()
                 .withBacon()
-                .buildPizzaHut();
+                .build("PizzaHut");
 
         Pizza pizzaHutLarge = new PizzaBuilder()
                 .size("Large")
                 .withChicken()
                 .withExtraCheese()
                 .withBeef()
-                .buildPizzaHut();
+                .build("PizzaHut");
         pizzaHutLarge.eat();
         pizzaHutSmall.eat();
 
@@ -232,7 +229,7 @@ public class PizzaDriver {
                 .withOlives()
                 .withBeef()
                 .withHamAndPineapple()
-                .buildLittleCaesars();
+                .build("Little Caesars");
 
         Pizza pizzaLittleCaesarsSmall = new PizzaBuilder()
                 .size("Small")
@@ -242,7 +239,7 @@ public class PizzaDriver {
                 .withPepperoni()
                 .withExtraCheese()
                 .withBeef()
-                .buildLittleCaesars();
+                .build("Little Caesars");
         pizzaLittleCaesarsSmall.eat();
         pizzaLittleCaesarsMedium.eat();
 
@@ -251,14 +248,14 @@ public class PizzaDriver {
         Pizza pizzaDominosSmall = new PizzaBuilder()
                 .size("Small")
                 .withPepperoni()
-                .buildDominos();
+                .build("Dominos");
 
         Pizza pizzaDominosLarge = new PizzaBuilder()
                 .size("Large")
                 .withChicken()
                 .withExtraCheese()
                 .withBeef()
-                .buildDominos();
+                .build("Dominos");
         pizzaDominosSmall.eat();
         pizzaDominosLarge.eat();
     }
