@@ -1,0 +1,279 @@
+import java.util.Random;
+class Customer{
+    private String name;
+    public enum Diet{
+        NoRestriction,
+        Paleo,
+        Vegan,
+        NutAllergy,
+        }
+    Diet diet;
+    public Customer(String name, Diet diet){
+        this.name = name;
+        this.diet = diet;
+    }
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Diet getDiet() {
+        return diet;
+    }
+
+    public void setDiet(Diet diet) {
+        this.diet = diet;
+    }
+}
+class Macronutrient{
+    String item;
+
+    public Macronutrient(String item)
+    {
+        this.item = item;
+    }
+
+    public String getItem()
+    {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public void print()
+    {
+        System.out.println("No meal");
+    }
+}
+
+class Carb extends Macronutrient{
+    public Carb(String item)
+    {
+        super(item);
+    }
+    public void print()
+    {
+        System.out.println("The Carb meal for you is : " + getItem());
+    }
+
+}
+
+class Protein extends Macronutrient{
+    public Protein(String item)
+    {
+        super(item);
+    }
+    public void print()
+    {
+        System.out.println("The Protein meal for you is : " + getItem());
+    }
+}
+
+class Fats extends Macronutrient{
+    public Fats(String item)
+    {
+        super(item);
+    }
+    public void print()
+    {
+        System.out.println("The Fats meal for you is : " + getItem());
+    }
+
+}
+
+abstract class AbstractFactory{
+    abstract Macronutrient makeNutrient(Customer customer);
+}
+class CarbFactory extends AbstractFactory{
+
+    private static CarbFactory carbFactory = null;
+    private CarbFactory(){}
+
+    public static CarbFactory getInstance()
+    {
+        if(carbFactory == null)
+        {
+            carbFactory = new CarbFactory();
+        }
+        return carbFactory;
+    }
+
+    Macronutrient makeNutrient(Customer customer)
+    {
+        String [] items = {"Cheese","Bread","Lentils","Pistachio"};
+        Random rnd = new Random();
+        switch (customer.diet) {
+            case NoRestriction:
+                return new Carb(items[rnd.nextInt(items.length)]);
+
+            case Paleo:
+                return new Carb("Pistachio");
+
+            case Vegan:
+                return new Carb(items[rnd.nextInt(items.length - 1) + 1]);
+
+            case NutAllergy:
+                return new Carb(items[rnd.nextInt(items.length - 1)]);
+
+            default:
+                return null;
+        }
+
+    }
+
+}
+class ProteinFactory extends AbstractFactory{
+    private static ProteinFactory proteinFactory = null;
+    private ProteinFactory(){}
+
+    public static ProteinFactory getInstance()
+    {
+        if(proteinFactory == null)
+        {
+            proteinFactory = new ProteinFactory();
+        }
+        return proteinFactory;
+    }
+
+    Macronutrient makeNutrient(Customer customer)
+    {
+        String [] items = {"Fish","Chicken","Beef","Tofu"};
+        Random rnd = new Random();
+        switch (customer.diet) {
+            case NoRestriction:
+                return new Protein(items[rnd.nextInt(items.length)]);
+
+            case Paleo:
+                return new Protein(items[rnd.nextInt(items.length - 1)]);
+
+            case Vegan:
+                return new Protein("Tofu");
+
+            case NutAllergy:
+                return new Protein(items[rnd.nextInt(items.length)]);
+
+            default:
+                return null;
+        }
+
+    }
+
+}
+class FatFactory extends AbstractFactory {
+    private static FatFactory fatFactory = null;
+    private FatFactory(){}
+
+    public static FatFactory getInstance()
+    {
+        if(fatFactory == null)
+        {
+            fatFactory = new FatFactory();
+        }
+        return fatFactory;
+    }
+
+    Macronutrient makeNutrient(Customer customer)
+    {
+        String [] items = {"Avocado","Sour Cream","Tuna","Peanuts"};
+        Random rnd = new Random();
+        switch (customer.diet) {
+            case NoRestriction:
+                return new Fats(items[rnd.nextInt(items.length)]);
+            case Paleo:
+                int randomIndex = rnd.nextInt(items.length - 1);
+                if (randomIndex >= 1) {
+                    randomIndex++; // Skip index 1
+                }
+                return new Fats(items[randomIndex]);
+            case Vegan:
+                randomIndex = rnd.nextInt(items.length - 2);
+                if (randomIndex >= 1) {
+                    randomIndex+= 2; // Skip index 1
+                }
+                return new Fats(items[randomIndex]);
+            case NutAllergy:
+                return new Fats(items[rnd.nextInt(items.length - 1)]);
+            default:
+                return null;
+        }
+
+    }
+
+}
+
+class MacronutrientProducer {
+
+    public static AbstractFactory getFactory(String type) {
+        switch (type) {
+            case "Carb":
+                return CarbFactory.getInstance();
+            case "Protein":
+                return ProteinFactory.getInstance();
+            case "Fat":
+                return FatFactory.getInstance();
+            default:
+                return null;
+        }
+    }
+}
+
+
+public class MacronutrientsDriver {
+    public static void main(String[] args) {
+        AbstractFactory carbFactory = MacronutrientProducer.getFactory("Carb");
+        AbstractFactory proteinFactory = MacronutrientProducer.getFactory("Protein");
+        AbstractFactory FatFactory = MacronutrientProducer.getFactory("Fat");
+
+        Customer c1 = new Customer("John", Customer.Diet.NoRestriction);
+        Macronutrient carb1 = carbFactory.makeNutrient(c1);
+        Macronutrient protein1 = proteinFactory.makeNutrient(c1);
+        Macronutrient fat1 = FatFactory.makeNutrient(c1);
+        printMeal(c1,carb1,protein1,fat1);
+
+        Customer c2 = new Customer("Kai", Customer.Diet.Paleo);
+        Macronutrient carb2 = carbFactory.makeNutrient(c2);
+        Macronutrient protein2 = proteinFactory.makeNutrient(c2);
+        Macronutrient fat2 = FatFactory.makeNutrient(c2);
+        printMeal(c2,carb2,protein2,fat2);
+
+        Customer c3 = new Customer("Leo", Customer.Diet.Vegan);
+        Macronutrient carb3 = carbFactory.makeNutrient(c3);
+        Macronutrient protein3 = proteinFactory.makeNutrient(c3);
+        Macronutrient fat3 = FatFactory.makeNutrient(c3);
+        printMeal(c3,carb3,protein3,fat3);
+
+        Customer c4 = new Customer("Pip", Customer.Diet.NutAllergy);
+        Macronutrient carb4 = carbFactory.makeNutrient(c4);
+        Macronutrient protein4 = proteinFactory.makeNutrient(c4);
+        Macronutrient fat4 = FatFactory.makeNutrient(c4);
+        printMeal(c4,carb4,protein4,fat4);
+
+        Customer c5 = new Customer("Abe", Customer.Diet.Vegan);
+        Macronutrient carb5 = carbFactory.makeNutrient(c5);
+        Macronutrient protein5 = proteinFactory.makeNutrient(c5);
+        Macronutrient fat5 = FatFactory.makeNutrient(c5);
+        printMeal(c5,carb5,protein5,fat5);
+
+        Customer c6 = new Customer("Kry", Customer.Diet.NoRestriction);
+        Macronutrient carb6 = carbFactory.makeNutrient(c6);
+        Macronutrient protein6 = proteinFactory.makeNutrient(c6);
+        Macronutrient fat6 = FatFactory.makeNutrient(c6);
+        printMeal(c6,carb6,protein6,fat6);
+    }
+
+    public static void printMeal(Customer c, Macronutrient carb, Macronutrient protein, Macronutrient fats)
+    {
+        System.out.println("The meal plan for " + c.getName() + " with the diet of " + c.getDiet() + " : ");
+        carb.print();
+        protein.print();
+        fats.print();
+        System.out.println();
+    }
+
+}
