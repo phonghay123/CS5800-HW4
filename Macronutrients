@@ -88,10 +88,12 @@ class Fats extends Macronutrient{
 }
 
 abstract class AbstractFactory{
+    //return the specific macronutrient that match customer diet plan
     abstract Macronutrient makeNutrient(Customer customer);
 }
 class CarbFactory extends AbstractFactory{
 
+    //Singleton
     private static CarbFactory carbFactory = null;
     private CarbFactory(){}
 
@@ -104,9 +106,10 @@ class CarbFactory extends AbstractFactory{
         return carbFactory;
     }
 
+    private String [] items = {"Cheese","Bread","Lentils","Pistachio"};
+
     Macronutrient makeNutrient(Customer customer)
     {
-        String [] items = {"Cheese","Bread","Lentils","Pistachio"};
         Random rnd = new Random();
         switch (customer.diet) {
             case NoRestriction:
@@ -141,9 +144,10 @@ class ProteinFactory extends AbstractFactory{
         return proteinFactory;
     }
 
+    private String [] items = {"Fish","Chicken","Beef","Tofu"};
     Macronutrient makeNutrient(Customer customer)
     {
-        String [] items = {"Fish","Chicken","Beef","Tofu"};
+
         Random rnd = new Random();
         switch (customer.diet) {
             case NoRestriction:
@@ -178,9 +182,10 @@ class FatFactory extends AbstractFactory {
         return fatFactory;
     }
 
+    private String [] items = {"Avocado","Sour Cream","Tuna","Peanuts"};
+
     Macronutrient makeNutrient(Customer customer)
     {
-        String [] items = {"Avocado","Sour Cream","Tuna","Peanuts"};
         Random rnd = new Random();
         switch (customer.diet) {
             case NoRestriction:
@@ -194,7 +199,7 @@ class FatFactory extends AbstractFactory {
             case Vegan:
                 randomIndex = rnd.nextInt(items.length - 2);
                 if (randomIndex >= 1) {
-                    randomIndex+= 2; // Skip index 1
+                    randomIndex+= 2; // Skip index 1 and 2
                 }
                 return new Fats(items[randomIndex]);
             case NutAllergy:
